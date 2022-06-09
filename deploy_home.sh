@@ -15,8 +15,15 @@ scriptdir=$(dirname $(readlink -f "$0"))
 # Ensure ~/bin exists
 mkdir -p ~/bin
 
-# Remove any symlinks created previously
 pushd "$scriptdir" > /dev/null
+
+# Ensure environment dependencies are present
+sh "$scriptdir/check_dependencies.sh"
+
+# Build additional projects
+sh "$scriptdir/projects.sh"
+
+# Remove any symlinks created previously
 dir=$(pwd -P)
 linkfile="$dir"/.links
 if [ -e "$linkfile" ] ; then
@@ -43,7 +50,7 @@ while IFS= read -r -d '' file; do
     dest=~/"$(dirname $file)" # Where the link will be
     targ="$dir"/"$file"       # Where the link will point
     ln -sf "$targ" "$dest" && echo "$file" >> "$linkfile".new
-done < <(find . -type f -printf '%P\0')
+done < <(find . -type f,l -printf '%P\0')
 
 # Remove any directories which are empty due to deleted links
 if [ -e "$linkfile" ] ; then
