@@ -14,7 +14,8 @@ REPOS="https://git.suckless.org/dwm \
      https://git.suckless.org/dmenu \
      https://git.suckless.org/surf \
      https://git.suckless.org/st \
-     https://git.suckless.org/slstatus"
+     https://git.suckless.org/slstatus \
+	 https://github.com/lornix/fauxcon"
 
 if [ -d ${projdir} ] ; then
     rm -rf ${projdir}
